@@ -38,16 +38,23 @@
     * { box-sizing: border-box; }
 
     body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: radial-gradient(circle at top, var(--bg-soft), var(--bg));
-      color: var(--text-main);
-      display: flex;
-      justify-content: center;
-      padding: 24px;
-      transition: background 0.25s ease, color 0.25s ease;
-    }
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: radial-gradient(circle at top, var(--bg-soft), var(--bg));
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
+  color: var(--text-main);
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
 
     body.no-scroll {
       overflow: hidden; /* used when dropdown is open */
@@ -95,18 +102,17 @@
     /* Logo */
 
     .logo {
-      width: 88px;
-      height: 88px;
-      border-radius: 999px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 6px;
-      flex-shrink: 0;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.5);
-    }
+  width: auto;
+  height: 100px;         /* Adjust if needed */
+  background: none;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 
     body.light .logo {
       background: #e5f0ff;
@@ -183,15 +189,26 @@
     /* Cards */
 
     .card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-subtle);
-      padding: 16px 18px;
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(18px);
-      position: relative;
-      overflow: hidden;
-    }
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.8);
+  border-color: rgba(56, 189, 248, 0.6);
+}
+
+body.light .card:hover {
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2);
+}
 
     .card.analytics-card::before {
       content: "";
@@ -238,19 +255,32 @@
     /* Filter card */
 
     .filters-card {
-  background: var(--card-bg);                 /* same as analytics card */
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-soft);
   color: var(--text-main);
   border-radius: var(--radius-lg);
   padding: 16px 18px;
-
-  overflow: visible;                          /* let dropdown escape */
-  position: relative;                         /* create stacking context */
-  z-index: 5;                                 /* above analytics card */
+  overflow: visible;
+  position: relative;
+  z-index: 5;
+  transition: all 0.3s ease;
 }
 
+body.light .filters-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+}
 
+.filters-card:hover {
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(56, 189, 248, 0.5);
+}
+
+body.light .filters-card:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
     body.light .filters-card {
       background: linear-gradient(
         135deg,
@@ -495,11 +525,36 @@
     }
 
     .kpi {
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 55%);
-    }
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 55%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.kpi:hover::before {
+  left: 100%;
+}
+
+.kpi:hover {
+  transform: scale(1.05);
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.4);
+}
 
     body.light .kpi {
       background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.08), #ffffff);
@@ -759,6 +814,54 @@
     .header-filter:hover {
       opacity: 1;
     }
+    /* Loading pulse for status text */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Smooth fade-in for table rows */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+tbody tr {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Stagger animation for multiple rows */
+tbody tr:nth-child(1) { animation-delay: 0.05s; }
+tbody tr:nth-child(2) { animation-delay: 0.1s; }
+tbody tr:nth-child(3) { animation-delay: 0.15s; }
+tbody tr:nth-child(4) { animation-delay: 0.2s; }
+tbody tr:nth-child(5) { animation-delay: 0.25s; }
+
+/* Glow effect for refresh button */
+@keyframes glow {
+  0%, 100% { box-shadow: 0 10px 22px rgba(56, 189, 248, 0.4); }
+  50% { box-shadow: 0 10px 30px rgba(56, 189, 248, 0.7); }
+}
+
+.btn-primary {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Chart cards entrance animation */
+.chart-card {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.charts-grid .chart-card:nth-child(1) { animation-delay: 0.1s; }
+.charts-grid .chart-card:nth-child(2) { animation-delay: 0.2s; }
+.charts-grid .chart-card:nth-child(3) { animation-delay: 0.3s; }
+.charts-grid .chart-card:nth-child(4) { animation-delay: 0.4s; }
+.charts-grid .chart-card:nth-child(5) { animation-delay: 0.5s; }
+.charts-grid .chart-card:nth-child(6) { animation-delay: 0.6s; }
   </style>
 </head>
 <body class="dark">
@@ -1072,20 +1175,21 @@
 
     // ===== LOAD DATA =====
     async function loadSheetData() {
-      statusTextEl.textContent = "Loading data…";
-      tableEl.innerHTML = "";
+  statusTextEl.textContent = "Loading data…";
+  // DON'T clear table here - let it stay visible
+  // tableEl.innerHTML = "";  <-- REMOVE THIS LINE
 
-      try {
-        const url =
-          SHEET_CSV_URL +
-          (SHEET_CSV_URL.includes("?") ? "&" : "?") +
-          "_=" +
-          Date.now();
+  try {
+    const url =
+      SHEET_CSV_URL +
+      (SHEET_CSV_URL.includes("?") ? "&" : "?") +
+      "_=" +
+      Date.now();
 
-        const res = await fetch(url);
-        if (!res.ok) throw new Error("HTTP " + res.status + " " + res.statusText);
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("HTTP " + res.status + " " + res.statusText);
 
-            const csvText = await res.text();
+    const csvText = await res.text();
     const rows = parseCsv(csvText);
 
     if (!rows.length) {
@@ -1097,24 +1201,18 @@
     const records = csvToRecords(rows);
     allRecords = records;
 
-    // 👇 remember currently selected agents before refreshing options
     const previousAgents = [...selectedAgents];
-
-    // 👇 rebuild dropdown but try to keep the same agents selected
     populateAgentFilter(records, previousAgents);
-
-    // 👇 re-apply filters (dates + agents)
     applyFiltersAndRender();
 
-
-        statusTextEl.textContent = "Loaded " + records.length + " rows.";
-      } catch (err) {
-        console.error("Fetch error:", err);
-        renderEmptyTable("Error: " + err.message);
-        statusTextEl.textContent = "Error: " + err.message;
-        updateMeta([]);
-      }
-    }
+    statusTextEl.textContent = "Loaded " + records.length + " rows.";
+  } catch (err) {
+    console.error("Fetch error:", err);
+    renderEmptyTable("Error: " + err.message);
+    statusTextEl.textContent = "Error: " + err.message;
+    updateMeta([]);
+  }
+}
 
     // ===== CSV HELPERS =====
     function parseCsv(text) {
@@ -1343,37 +1441,68 @@
     }
 
     function renderTable(records) {
-      if (!records.length) {
-        renderEmptyTable("No records after filters.");
-        return;
-      }
+  if (!records.length) {
+    renderEmptyTable("No records after filters.");
+    return;
+  }
 
-      const headerCols = Object.keys(records[0]).filter(k => !k.startsWith("__"));
+  const headerCols = Object.keys(records[0]).filter(k => !k.startsWith("__"));
+  
+  // Only rebuild table if it's empty or structure changed
+  const existingHeaders = [...tableEl.querySelectorAll("thead th")].map(th => 
+    th.getAttribute("data-col-name") || th.textContent.trim()
+  );
+  
+  const needsRebuild = existingHeaders.length === 0 || 
+                       JSON.stringify(existingHeaders) !== JSON.stringify(headerCols);
 
-      let theadHtml = "<thead><tr>";
-      headerCols.forEach(col => {
-        theadHtml += `<th data-col-name="${escapeHtml(col)}">${escapeHtml(col)}</th>`;
-      });
-      theadHtml += "</tr></thead>";
+  if (needsRebuild) {
+    let theadHtml = "<thead><tr>";
+    headerCols.forEach(col => {
+      theadHtml += `<th data-col-name="${escapeHtml(col)}">${escapeHtml(col)}</th>`;
+    });
+    theadHtml += "</tr></thead>";
 
-      let tbodyHtml = "<tbody>";
-      for (const rec of records) {
-        tbodyHtml += "<tr>";
-        for (const col of headerCols) {
-          let value = rec[col] || "";
-          if (col === COL_TICKET_ID && value) {
-            value = `<a href="${value}" target="_blank" class="ticket-link">View</a>`;
-          }
-          tbodyHtml += `<td>${value}</td>`;
+    let tbodyHtml = "<tbody>";
+    for (const rec of records) {
+      tbodyHtml += "<tr>";
+      for (const col of headerCols) {
+        let value = rec[col] || "";
+        if (col === COL_TICKET_ID && value) {
+          value = `<a href="${value}" target="_blank" class="ticket-link">View</a>`;
         }
-        tbodyHtml += "</tr>";
+        tbodyHtml += `<td>${value}</td>`;
       }
-      tbodyHtml += "</tbody>";
-
-      tableEl.innerHTML = theadHtml + tbodyHtml;
-
-      enhanceTableWithFilters();
+      tbodyHtml += "</tr>";
     }
+    tbodyHtml += "</tbody>";
+
+    tableEl.innerHTML = theadHtml + tbodyHtml;
+    enhanceTableWithFilters();
+  } else {
+    // Just update tbody content without blinking
+    let tbodyHtml = "";
+    for (const rec of records) {
+      tbodyHtml += "<tr>";
+      for (const col of headerCols) {
+        let value = rec[col] || "";
+        if (col === COL_TICKET_ID && value) {
+          value = `<a href="${value}" target="_blank" class="ticket-link">View</a>`;
+        }
+        tbodyHtml += `<td>${value}</td>`;
+      }
+      tbodyHtml += "</tr>";
+    }
+    
+    const tbody = tableEl.querySelector("tbody");
+    if (tbody) {
+      tbody.innerHTML = tbodyHtml;
+    }
+    
+    applyAllColumnFilters();
+    applyHiddenColumns();
+  }
+}
 
     function escapeHtml(str) {
       return String(str)
@@ -1474,10 +1603,15 @@
         }
       }
 
-      kpiTicketsEl.textContent = tickets;
-      kpiQaFoundEl.textContent = qaFound;
-      kpiDisputedEl.textContent = disputed;
-      kpiFeedbackEl.textContent = feedbackCount;
+      const oldTickets = parseInt(kpiTicketsEl.textContent) || 0;
+const oldQa = parseInt(kpiQaFoundEl.textContent) || 0;
+const oldDisputed = parseInt(kpiDisputedEl.textContent) || 0;
+const oldFeedback = parseInt(kpiFeedbackEl.textContent) || 0;
+
+animateValue(kpiTicketsEl, oldTickets, tickets, 500);
+animateValue(kpiQaFoundEl, oldQa, qaFound, 500);
+animateValue(kpiDisputedEl, oldDisputed, disputed, 500);
+animateValue(kpiFeedbackEl, oldFeedback, feedbackCount, 500);
       recordsPillEl.textContent = rowCount + (rowCount === 1 ? " row" : " rows");
       lastUpdatedEl.textContent = new Date().toLocaleString();
 
@@ -2192,6 +2326,25 @@ function attachChipHandlers() {
         document.body.classList.remove("no-scroll");
       }
     });
+    // Animate numbers counting up
+function animateValue(element, start, end, duration) {
+  const range = end - start;
+  const increment = range / (duration / 16);
+  let current = start;
+  
+  const timer = setInterval(() => {
+    current += increment;
+    if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+      current = end;
+      clearInterval(timer);
+    }
+    element.textContent = Math.round(current);
+  }, 16);
+}
+
+// Update the updateMeta function to use animations
+// Find this line: kpiTicketsEl.textContent = tickets;
+// Replace these 4 lines:
 
     function updateSelectedAgents() {
       selectedAgents = [...agentOptionsBox.querySelectorAll("input:checked")].map(i => i.value);
