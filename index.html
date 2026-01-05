@@ -38,23 +38,16 @@
     * { box-sizing: border-box; }
 
     body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: radial-gradient(circle at top, var(--bg-soft), var(--bg));
-  background-size: 200% 200%;
-  animation: gradientShift 15s ease infinite;
-  color: var(--text-main);
-  display: flex;
-  justify-content: center;
-  padding: 24px;
-  transition: background 0.25s ease, color 0.25s ease;
-}
-
-@keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, var(--bg-soft), var(--bg));
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
 
     body.no-scroll {
       overflow: hidden; /* used when dropdown is open */
@@ -189,26 +182,15 @@
     /* Cards */
 
     .card {
-  background: var(--card-bg);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-subtle);
-  padding: 16px 18px;
-  box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(18px);
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.8);
-  border-color: rgba(56, 189, 248, 0.6);
-}
-
-body.light .card:hover {
-  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2);
-}
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(18px);
+      position: relative;
+      overflow: hidden;
+    }
 
     .card.analytics-card::before {
       content: "";
@@ -255,32 +237,19 @@ body.light .card:hover {
     /* Filter card */
 
     .filters-card {
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(20px) saturate(180%);
+  background: var(--card-bg);                 /* same as analytics card */
   border: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-soft);
   color: var(--text-main);
   border-radius: var(--radius-lg);
   padding: 16px 18px;
-  overflow: visible;
-  position: relative;
-  z-index: 5;
-  transition: all 0.3s ease;
+
+  overflow: visible;                          /* let dropdown escape */
+  position: relative;                         /* create stacking context */
+  z-index: 5;                                 /* above analytics card */
 }
 
-body.light .filters-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px) saturate(180%);
-}
 
-.filters-card:hover {
-  background: rgba(15, 23, 42, 0.85);
-  border-color: rgba(56, 189, 248, 0.5);
-}
-
-body.light .filters-card:hover {
-  background: rgba(255, 255, 255, 0.9);
-}
     body.light .filters-card {
       background: linear-gradient(
         135deg,
@@ -525,36 +494,11 @@ body.light .filters-card:hover {
     }
 
     .kpi {
-  padding: 10px 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(148, 163, 184, 0.5);
-  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 55%);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.kpi::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.3), transparent);
-  transition: left 0.5s ease;
-}
-
-.kpi:hover::before {
-  left: 100%;
-}
-
-.kpi:hover {
-  transform: scale(1.05);
-  border-color: var(--accent);
-  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.4);
-}
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 55%);
+    }
 
     body.light .kpi {
       background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.08), #ffffff);
@@ -814,54 +758,136 @@ body.light .filters-card:hover {
     .header-filter:hover {
       opacity: 1;
     }
-    /* Loading pulse for status text */
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
+    /* Skeleton loading styles */
+    .skeleton {
+      background: linear-gradient(90deg, 
+        rgba(148, 163, 184, 0.1) 25%, 
+        rgba(148, 163, 184, 0.2) 50%, 
+        rgba(148, 163, 184, 0.1) 75%);
+      background-size: 200% 100%;
+      animation: skeleton-loading 1.5s ease-in-out infinite;
+      border-radius: 8px;
+    }
 
-.loading {
-  animation: pulse 1.5s ease-in-out infinite;
-}
+    body.light .skeleton {
+      background: linear-gradient(90deg, 
+        rgba(148, 163, 184, 0.15) 25%, 
+        rgba(148, 163, 184, 0.3) 50%, 
+        rgba(148, 163, 184, 0.15) 75%);
+      background-size: 200% 100%;
+    }
 
-/* Smooth fade-in for table rows */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+    @keyframes skeleton-loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
 
-tbody tr {
-  animation: fadeIn 0.3s ease-out;
-}
+    .skeleton-kpi {
+      height: 100px;
+    }
 
-/* Stagger animation for multiple rows */
-tbody tr:nth-child(1) { animation-delay: 0.05s; }
-tbody tr:nth-child(2) { animation-delay: 0.1s; }
-tbody tr:nth-child(3) { animation-delay: 0.15s; }
-tbody tr:nth-child(4) { animation-delay: 0.2s; }
-tbody tr:nth-child(5) { animation-delay: 0.25s; }
+    .skeleton-chart {
+      height: 210px;
+    }
 
-/* Glow effect for refresh button */
-@keyframes glow {
-  0%, 100% { box-shadow: 0 10px 22px rgba(56, 189, 248, 0.4); }
-  50% { box-shadow: 0 10px 30px rgba(56, 189, 248, 0.7); }
-}
+    .skeleton-text {
+      height: 20px;
+      margin: 8px 0;
+      width: 100%;
+    }
 
-.btn-primary {
-  animation: glow 2s ease-in-out infinite;
-}
+    .skeleton-text.short {
+      width: 60%;
+    }
 
-/* Chart cards entrance animation */
-.chart-card {
-  animation: fadeIn 0.5s ease-out;
-}
+    /* Toast notification styles */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 9999;
+      min-width: 280px;
+      animation: toast-slide-in 0.3s ease-out;
+      backdrop-filter: blur(18px);
+    }
 
-.charts-grid .chart-card:nth-child(1) { animation-delay: 0.1s; }
-.charts-grid .chart-card:nth-child(2) { animation-delay: 0.2s; }
-.charts-grid .chart-card:nth-child(3) { animation-delay: 0.3s; }
-.charts-grid .chart-card:nth-child(4) { animation-delay: 0.4s; }
-.charts-grid .chart-card:nth-child(5) { animation-delay: 0.5s; }
-.charts-grid .chart-card:nth-child(6) { animation-delay: 0.6s; }
+    @keyframes toast-slide-in {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes toast-slide-out {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+    }
+
+    .toast.hiding {
+      animation: toast-slide-out 0.3s ease-out forwards;
+    }
+
+    .toast-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .toast-content {
+      flex: 1;
+    }
+
+    .toast-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .toast-message {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .toast-close {
+      cursor: pointer;
+      font-size: 16px;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+      flex-shrink: 0;
+    }
+
+    .toast-close:hover {
+      opacity: 1;
+    }
+
+    .toast.success {
+      border-left: 3px solid #22c55e;
+    }
+
+    .toast.info {
+      border-left: 3px solid var(--accent);
+    }
+
+    .toast.error {
+      border-left: 3px solid #ef4444;
+    }
   </style>
 </head>
 <body class="dark">
@@ -1110,6 +1136,133 @@ tbody tr:nth-child(5) { animation-delay: 0.25s; }
     // Column filter/hide state
     let tableFilters = {};      // { colName: Set(values) }
     let hiddenColumns = new Set();
+    // Toast notification state
+    let activeToasts = [];
+
+    // Toast notification function
+    function showToast(title, message, type = 'info', duration = 3000) {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      const icons = {
+        success: '✓',
+        info: 'ℹ',
+        error: '✕'
+      };
+      
+      toast.innerHTML = `
+        <div class="toast-icon">${icons[type] || icons.info}</div>
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          <div class="toast-message">${message}</div>
+        </div>
+        <div class="toast-close">×</div>
+      `;
+      
+      document.body.appendChild(toast);
+      activeToasts.push(toast);
+      
+      const closeBtn = toast.querySelector('.toast-close');
+      closeBtn.onclick = () => removeToast(toast);
+      
+      if (duration > 0) {
+        setTimeout(() => removeToast(toast), duration);
+      }
+    }
+
+    function removeToast(toast) {
+      toast.classList.add('hiding');
+      setTimeout(() => {
+        toast.remove();
+        activeToasts = activeToasts.filter(t => t !== toast);
+      }, 300);
+    }
+    // Show skeleton loading
+    // Show skeleton loading
+    function showSkeletonLoading() {
+      // KPIs skeleton - only add skeleton, don't store content
+      document.querySelectorAll('.kpi').forEach(kpi => {
+        const existing = kpi.querySelector('.skeleton');
+        if (!existing) {
+          kpi.style.position = 'relative';
+          kpi.style.overflow = 'hidden';
+          const skeleton = document.createElement('div');
+          skeleton.className = 'skeleton skeleton-kpi';
+          skeleton.style.position = 'absolute';
+          skeleton.style.top = '0';
+          skeleton.style.left = '0';
+          skeleton.style.right = '0';
+          skeleton.style.bottom = '0';
+          skeleton.style.zIndex = '10';
+          kpi.appendChild(skeleton);
+        }
+      });
+      
+      // Charts skeleton
+      document.querySelectorAll('.chart-card canvas').forEach(canvas => {
+        const parent = canvas.parentElement;
+        const existing = parent.querySelector('[data-skeleton="true"]');
+        if (!existing) {
+          canvas.style.opacity = '0.3';
+          const skeleton = document.createElement('div');
+          skeleton.className = 'skeleton skeleton-chart';
+          skeleton.dataset.skeleton = 'true';
+          skeleton.style.position = 'absolute';
+          skeleton.style.top = '40px';
+          skeleton.style.left = '10px';
+          skeleton.style.right = '10px';
+          skeleton.style.bottom = '10px';
+          parent.style.position = 'relative';
+          parent.appendChild(skeleton);
+        }
+      });
+      
+      // Leaderboard skeleton
+      const leaderBadges = leaderListEl.querySelectorAll('.leader-badge');
+      if (leaderBadges.length > 0) {
+        leaderBadges.forEach(badge => {
+          badge.style.opacity = '0.3';
+        });
+      } else {
+        leaderListEl.innerHTML = `
+          <li class="leader-badge skeleton skeleton-text short" style="height: 28px; width: 120px;"></li>
+          <li class="leader-badge skeleton skeleton-text short" style="height: 28px; width: 120px;"></li>
+          <li class="leader-badge skeleton skeleton-text short" style="height: 28px; width: 120px;"></li>
+        `;
+      }
+    }
+
+    // Hide skeleton loading
+    function hideSkeletonLoading() {
+      // Remove KPI skeletons
+      document.querySelectorAll('.kpi .skeleton').forEach(skeleton => {
+        skeleton.remove();
+      });
+      document.querySelectorAll('.kpi').forEach(kpi => {
+        kpi.style.position = '';
+        kpi.style.overflow = '';
+      });
+      
+      // Remove chart skeletons and restore opacity
+      document.querySelectorAll('.chart-card canvas').forEach(canvas => {
+        canvas.style.opacity = '';
+        const parent = canvas.parentElement;
+        const skeleton = parent.querySelector('[data-skeleton="true"]');
+        if (skeleton) {
+          skeleton.remove();
+        }
+        parent.style.position = '';
+      });
+      
+      // Restore leaderboard opacity
+      const leaderBadges = leaderListEl.querySelectorAll('.leader-badge');
+      leaderBadges.forEach(badge => {
+        badge.style.opacity = '';
+      });
+      
+      // Remove skeleton badges if they exist
+      leaderListEl.querySelectorAll('.skeleton').forEach(sk => sk.remove());
+    }
 
     // ===== ELEMENTS =====
     const tableEl = document.getElementById("data-table");
@@ -1174,45 +1327,71 @@ tbody tr:nth-child(5) { animation-delay: 0.25s; }
     }
 
     // ===== LOAD DATA =====
-    async function loadSheetData() {
-  statusTextEl.textContent = "Loading data…";
-  // DON'T clear table here - let it stay visible
-  // tableEl.innerHTML = "";  <-- REMOVE THIS LINE
+    async function loadSheetData(isAutoRefresh = false) {
+      statusTextEl.textContent = "Loading data…";
+      
+      // Show skeleton only on initial load or manual refresh
+      if (!isAutoRefresh) {
+        showSkeletonLoading();
+      }
 
-  try {
-    const url =
-      SHEET_CSV_URL +
-      (SHEET_CSV_URL.includes("?") ? "&" : "?") +
-      "_=" +
-      Date.now();
+      try {
+        const url =
+          SHEET_CSV_URL +
+          (SHEET_CSV_URL.includes("?") ? "&" : "?") +
+          "_=" +
+          Date.now();
 
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("HTTP " + res.status + " " + res.statusText);
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("HTTP " + res.status + " " + res.statusText);
 
-    const csvText = await res.text();
-    const rows = parseCsv(csvText);
+        const csvText = await res.text();
+        const rows = parseCsv(csvText);
 
-    if (!rows.length) {
-      renderEmptyTable("No data found.");
-      updateMeta([]);
-      return;
+        if (!rows.length) {
+          renderEmptyTable("No data found.");
+          updateMeta([]);
+          hideSkeletonLoading();
+          return;
+        }
+
+        const records = csvToRecords(rows);
+        allRecords = records;
+
+        const previousAgents = [...selectedAgents];
+        populateAgentFilter(records, previousAgents);
+        applyFiltersAndRender();
+
+        statusTextEl.textContent = "Loaded " + records.length + " rows.";
+        
+        // Hide skeleton
+        hideSkeletonLoading();
+        
+        // Show toast notification
+        if (isAutoRefresh) {
+          showToast(
+            'Data Refreshed', 
+            `Successfully updated ${records.length} rows at ${new Date().toLocaleTimeString()}`,
+            'success',
+            2500
+          );
+        }
+      } catch (err) {
+        console.error("Fetch error:", err);
+        renderEmptyTable("Error: " + err.message);
+        statusTextEl.textContent = "Error: " + err.message;
+        updateMeta([]);
+        hideSkeletonLoading();
+        
+        // Show error toast
+        showToast(
+          'Refresh Failed', 
+          err.message,
+          'error',
+          4000
+        );
+      }
     }
-
-    const records = csvToRecords(rows);
-    allRecords = records;
-
-    const previousAgents = [...selectedAgents];
-    populateAgentFilter(records, previousAgents);
-    applyFiltersAndRender();
-
-    statusTextEl.textContent = "Loaded " + records.length + " rows.";
-  } catch (err) {
-    console.error("Fetch error:", err);
-    renderEmptyTable("Error: " + err.message);
-    statusTextEl.textContent = "Error: " + err.message;
-    updateMeta([]);
-  }
-}
 
     // ===== CSV HELPERS =====
     function parseCsv(text) {
@@ -1603,15 +1782,10 @@ tbody tr:nth-child(5) { animation-delay: 0.25s; }
         }
       }
 
-      const oldTickets = parseInt(kpiTicketsEl.textContent) || 0;
-const oldQa = parseInt(kpiQaFoundEl.textContent) || 0;
-const oldDisputed = parseInt(kpiDisputedEl.textContent) || 0;
-const oldFeedback = parseInt(kpiFeedbackEl.textContent) || 0;
-
-animateValue(kpiTicketsEl, oldTickets, tickets, 500);
-animateValue(kpiQaFoundEl, oldQa, qaFound, 500);
-animateValue(kpiDisputedEl, oldDisputed, disputed, 500);
-animateValue(kpiFeedbackEl, oldFeedback, feedbackCount, 500);
+      kpiTicketsEl.textContent = tickets;
+      kpiQaFoundEl.textContent = qaFound;
+      kpiDisputedEl.textContent = disputed;
+      kpiFeedbackEl.textContent = feedbackCount;
       recordsPillEl.textContent = rowCount + (rowCount === 1 ? " row" : " rows");
       lastUpdatedEl.textContent = new Date().toLocaleString();
 
@@ -2326,25 +2500,6 @@ function attachChipHandlers() {
         document.body.classList.remove("no-scroll");
       }
     });
-    // Animate numbers counting up
-function animateValue(element, start, end, duration) {
-  const range = end - start;
-  const increment = range / (duration / 16);
-  let current = start;
-  
-  const timer = setInterval(() => {
-    current += increment;
-    if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-      current = end;
-      clearInterval(timer);
-    }
-    element.textContent = Math.round(current);
-  }, 16);
-}
-
-// Update the updateMeta function to use animations
-// Find this line: kpiTicketsEl.textContent = tickets;
-// Replace these 4 lines:
 
     function updateSelectedAgents() {
       selectedAgents = [...agentOptionsBox.querySelectorAll("input:checked")].map(i => i.value);
@@ -2387,7 +2542,10 @@ document.addEventListener("keydown", (e) => {
 
 
     // ===== EVENTS =====
-    refreshBtn.addEventListener("click", loadSheetData);
+    refreshBtn.addEventListener("click", () => {
+      showToast('Refreshing Data', 'Fetching latest data from sheet...', 'info', 1500);
+      loadSheetData(false);
+    });
     fromDateEl.addEventListener("change", applyFiltersAndRender);
     toDateEl.addEventListener("change", applyFiltersAndRender);
 
@@ -2426,12 +2584,12 @@ document.addEventListener("keydown", (e) => {
 
     // ===== INIT =====
     initTheme();
-    loadSheetData();
-    // ===== AUTO REFRESH EVERY 10 SECONDS =====
-setInterval(() => {
-  console.log("Auto-refreshing data...");
-  loadSheetData();
-}, 10000); // 10,000 ms = 10 seconds
+    loadSheetData(false); // Initial load with skeleton
+// ===== AUTO REFRESH EVERY 10 SECONDS =====
+    setInterval(() => {
+      console.log("Auto-refreshing data...");
+      loadSheetData(true); // Pass true to indicate auto-refresh
+    }, 60000); // 10,000 ms = 10 seconds
   </script>
 </body>
 </html>
